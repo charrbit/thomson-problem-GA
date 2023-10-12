@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
-from myFuncs import *
+
+from Population import *
 
 # Parse arguments
 parser = ArgumentParser(description='Genetic Algorithm Approach to the Tompson Problem')
