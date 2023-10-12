@@ -32,7 +32,7 @@ class Individual:
             k_i[i] = BitArray(bin=k_i[i]).float
             k_j[i] = BitArray(bin=k_j[i]).float
         # Convert the points to floats then find the difference between the k and kprime values
-        diff = k_i.astype(np.float) - k_j.astype(np.float)
+        diff = k_i.astype(float) - k_j.astype(float)
         # Convert k and kprime values to spherical coordinates theta and psi)
         diff *= np.array([np.pi, 2*np.pi])
         return 1 / np.linalg.norm(diff)
@@ -75,7 +75,7 @@ class Individual:
             k = np.array([point[0 : self.SCBL], point[self.SCBL:]])
             k[0] = BitArray(bin=k[0]).float
             k[1] = BitArray(bin=k[1]).float
-            k = k.astype(np.float)
+            k = k.astype(float)
             if (k[0] < 0) or (k[0] > 1) or (k[1] < 0) or (k[1] > 1):
                 return True
         return False
@@ -147,7 +147,7 @@ class Population:
             k = np.array([point[0 : self.SCBL], point[self.SCBL:]])
             k[0] = BitArray(bin=k[0]).float
             k[1] = BitArray(bin=k[1]).float
-            r = k.astype(np.float) * np.array([np.pi, 2*np.pi])
+            r = k.astype(float) * np.array([np.pi, 2*np.pi])
             print('Point', i, '| Theta: ', r[0], 'rad\n\t  Psi: ', r[1], 'rad\n')
         print('-------------------------------------------------------')
 
@@ -181,7 +181,7 @@ class Population:
             k = np.array([point[0 : self.SCBL], point[self.SCBL:]])
             k[0] = BitArray(bin=k[0]).float
             k[1] = BitArray(bin=k[1]).float
-            pos = k.astype(np.float) * np.array([np.pi, 2*np.pi])
+            pos = k.astype(float) * np.array([np.pi, 2*np.pi])
             pointX = np.sin(pos[1])*np.cos(pos[0])
             pointY = np.sin(pos[1])*np.sin(pos[0])
             pointZ = np.cos(pos[1])
