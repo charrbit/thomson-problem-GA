@@ -9,8 +9,8 @@ class Individual:
         # P = (R, theta, phi)
     # For the unit sphere, R = 1 => P = (1, theta, phi) => P(theta, phi)
         # Note: theta in [0, pi] and phi in [0, 2pi]
-    # Then, a point on the unit sphere can be described with two real numbers, k and k'
-        # P(theta, phi) = P(k * pi, k' * 2pi) where k and k' in [0, 1] => P(k, k')
+    # Then, a point on the unit sphere can be described with two real numbers, thetaReal and phiReal
+        # P(theta, phi) = P(thetaReal * pi, phiReal * 2pi) => P(thetaReal, phiReal) where thetaReal and phiReal in [0, 1]
     def __init__(self, numPoints, SCBL):
         self.chromosome = ''
         self.numPoints = numPoints
@@ -19,26 +19,26 @@ class Individual:
 
         # Generate a random chromosome for this individual
         for i in range(self.numPoints):
-            k = rng.random()
-            kprime = rng.random()
+            thetaReal = rng.random()
+            phiReal = rng.random()
             # Convert these values to a bitstring and append it to the chromosome
-            self.chromosome += BitArray(float=k, length=self.SCBL).bin + BitArray(float=kprime, length=self.SCBL).bin
+            self.chromosome += BitArray(float=thetaReal, length=self.SCBL).bin + BitArray(float=phiReal, length=self.SCBL).bin
         # Set the initial fitness value
         self.fitnessScore = self.getFitness()
 
     def fitness(self, point1, point2):
         ''' Calculates the electrostatic potential between two points where
-            the points are given as bitstrings containing a k and k' value'''
-        # Extract k and kprime for each point i, j in bitstring form
+            the points are given as bitstrings containing a thetaReal and phiReal value'''
+        # Extract thetaReal and phiReal for each point i, j in bitstring form
         k_i = np.array([point1[0 : self.SCBL], point1[self.SCBL:]])
         k_j = np.array([point2[0 : self.SCBL], point2[self.SCBL:]])
-        # Convert the k and kprime values from bitstring to a float represented as a string
+        # Convert the thetaReal and phiReal values from bitstring to a float represented as a string
         for i in range(len(k_i)):
             k_i[i] = BitArray(bin=k_i[i]).float
             k_j[i] = BitArray(bin=k_j[i]).float
-        # Convert the points to floats then find the difference between the k and kprime values
+        # Convert the points to floats then find the difference between the thetaReal and phiReal values
         diff = k_i.astype(float) - k_j.astype(float)
-        # Convert k and kprime values to spherical coordinates theta and psi)
+        # Convert thetaReal and phiReal values to spherical coordinates theta and phi
         diff *= np.array([np.pi, 2*np.pi])
         return 1 / np.linalg.norm(diff)
 
@@ -73,7 +73,7 @@ class Individual:
 
     def isBadChromosome(self):
         ''' When mutating or crossing chromosomes, it is possible to get a value that is
-            not within the appropriate [0,1] range for k or kprime. If this happens, the 
+            not within the appropriate [0,1] range for thetaReal or phiReal. If this happens, the 
             chromosome is considered bad and is replaced with a random valid one '''
         for i in range(self.numPoints):
             point = self.chromosome[i*(self.SCBL*2) : (i+1)*(self.SCBL*2)]
