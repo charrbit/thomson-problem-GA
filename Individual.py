@@ -29,15 +29,15 @@ class Individual:
     def fitness(self, point1, point2):
         ''' Calculates the electrostatic potential between two points where
             the points are given as bitstrings containing a thetaReal and phiReal value'''
-        # Extract thetaReal and phiReal for each point i, j in bitstring form
-        k_i = np.array([point1[0 : self.SCBL], point1[self.SCBL:]])
-        k_j = np.array([point2[0 : self.SCBL], point2[self.SCBL:]])
+        # Extract thetaReal and phiReal for each point in bitstring form
+        P1 = np.array([point1[0 : self.SCBL], point1[self.SCBL:]])
+        P2 = np.array([point2[0 : self.SCBL], point2[self.SCBL:]])
         # Convert the thetaReal and phiReal values from bitstring to a float represented as a string
-        for i in range(len(k_i)):
-            k_i[i] = BitArray(bin=k_i[i]).float
-            k_j[i] = BitArray(bin=k_j[i]).float
+        for i in range(len(P1)):
+            P1[i] = BitArray(bin=P1[i]).float
+            P2[i] = BitArray(bin=P2[i]).float
         # Convert the points to floats then find the difference between the thetaReal and phiReal values
-        diff = k_i.astype(float) - k_j.astype(float)
+        diff = P1.astype(float) - P2.astype(float)
         # Convert thetaReal and phiReal values to spherical coordinates theta and phi
         diff *= np.array([np.pi, 2*np.pi])
         return 1 / np.linalg.norm(diff)
@@ -77,10 +77,10 @@ class Individual:
             chromosome is considered bad and is replaced with a random valid one '''
         for i in range(self.numPoints):
             point = self.chromosome[i*(self.SCBL*2) : (i+1)*(self.SCBL*2)]
-            k = np.array([point[0 : self.SCBL], point[self.SCBL:]])
-            k[0] = BitArray(bin=k[0]).float
-            k[1] = BitArray(bin=k[1]).float
-            k = k.astype(float)
-            if (k[0] < 0) or (k[0] > 1) or (k[1] < 0) or (k[1] > 1):
+            P = np.array([point[0 : self.SCBL], point[self.SCBL:]])
+            P[0] = BitArray(bin=P[0]).float
+            P[1] = BitArray(bin=P[1]).float
+            P = P.astype(float)
+            if (P[0] < 0) or (P[0] > 1) or (P[1] < 0) or (P[1] > 1):
                 return True
         return False
