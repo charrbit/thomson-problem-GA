@@ -25,7 +25,7 @@ def pointToBitArray(pointToConvert):
 def bitArrayToPoint(bitArrayToConvert, coordBitLength):
     # Split the BitArray point into its two component BitArrays
     point = [bitArrayToConvert.bin[:coordBitLength], bitArrayToConvert.bin[coordBitLength:]]
-    point = [BitArray(bin=f'0b'{x}) for x in point]
+    point = [BitArray(bin=f'0b{x}') for x in point]
     # Convert each component into a float
     point = [bitArrayToFloat(x) for x in point]
     return point
