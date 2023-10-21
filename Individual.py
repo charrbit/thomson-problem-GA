@@ -3,7 +3,14 @@ import random as rng
 import numpy as np
 
 class Individual:
-    # r = ( theta, phi ) = ( k * pi, k' * 2pi ) = ( k, k' ) where k and k' in [0,1]
+    ''' An individual of the genetic algorithm consits of an approximate solution to the Thomson
+        problem for a given number of electrons (i.e. a set of points on the sphere) '''
+    # A point on a sphere, in a spherical coordinate system, can be described by three values
+        # P = (R, theta, phi)
+    # For the unit sphere, R = 1 => P = (1, theta, phi) => P(theta, phi)
+        # Note: theta in [0, pi] and phi in [0, 2pi]
+    # Then, a point on the unit sphere can be described with two real numbers, k and k'
+        # P(theta, phi) = P(k * pi, k' * 2pi) where k and k' in [0, 1] => P(k, k')
     def __init__(self, numPoints, SCBL):
         self.chromosome = ''
         self.numPoints = numPoints
