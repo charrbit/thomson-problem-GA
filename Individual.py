@@ -1,6 +1,8 @@
 from bitstring import BitArray
-import random as rng
 import numpy as np
+
+# Create random number generator
+rng = np.random.default_rng()
 
 class Individual:
     ''' An individual of the genetic algorithm consits of an approximate solution to the Thomson
@@ -57,7 +59,7 @@ class Individual:
         return fitnessScore
 
     def mutate(self):
-        mutIndex = rng.randint(0, len(self.chromosome) - 1)
+        mutIndex = rng.integers(0, len(self.chromosome) - 1)
         # Get chromosome as a list so it can be modified
         # (Python strings are immutable)
         chromList = list(self.chromosome)

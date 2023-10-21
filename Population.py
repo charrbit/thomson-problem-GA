@@ -31,11 +31,11 @@ class Population:
         # While the population is not back to its original size
         while len(self.individals) < self.numIndividuals:
             # Randomly choose two parents to cross
-            parent1index = rng.randint(0, len(self.individals) - 1)
-            parent2index = rng.randint(0, len(self.individals) - 1)
+            parent1index = rng.integers(0, len(self.individals) - 1)
+            parent2index = rng.integers(0, len(self.individals) - 1)
             # Ensure the same parent is not chosen twice
             while parent1index != parent2index:
-                parent2index = rng.randint(0, len(self.individals))
+                parent2index = rng.integers(0, len(self.individals))
 
             parent1chromosome = self.individals[parent1index].chromosome
             parent2chromosome = self.individals[parent2index].chromosome
