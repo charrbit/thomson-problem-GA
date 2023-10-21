@@ -1,5 +1,6 @@
-from bitstring import BitArray
 import numpy as np
+
+from helperMethods import *
 
 # Create random number generator
 rng = np.random.default_rng()
