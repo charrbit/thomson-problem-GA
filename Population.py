@@ -4,17 +4,17 @@ from mpl_toolkits.mplot3d import Axes3D
 from Individual import *
 
 class Population:
-    def __init__(self, numPoints, numIndividuals, mutationProb, SCBL):
+    def __init__(self, numPoints, numIndividuals, mutationProb):
         self.individals = []
         self.numPoints = numPoints
         self.numIndividuals = numIndividuals
         self.currGeneration = 0
         self.mutationRate = mutationProb
-        self.SCBL = SCBL
+        self.SCBL = 64
 
         # Generate the population
         for i in range(numIndividuals):
-            self.individals.append(Individual(numPoints, SCBL))
+            self.individals.append(Individual(numPoints))
 
     def sortPopulation(self):
         # Sort individuals in ascending order of fitness score
@@ -39,7 +39,7 @@ class Population:
 
             parent1chromosome = self.individals[parent1index].chromosome
             parent2chromosome = self.individals[parent2index].chromosome
-            newChild = Individual(self.numPoints, self.SCBL)
+            newChild = Individual(self.numPoints)
             # Randomly choose which parent the child gets the first half of its chromosome from
             if rng.random() <= 0.5:
                 newChild.chromosome = parent1chromosome[:int(len(parent1chromosome)/2)] + parent2chromosome[int(len(parent2chromosome)/2):]
@@ -48,7 +48,7 @@ class Population:
 
             if newChild.isBadChromosome():
                 # Generate a new valid chromosome
-                newChild.chromosome = Individual(self.numPoints, self.SCBL).chromosome
+                newChild.chromosome = Individual(self.numPoints).chromosome
             newChild.fitnessScore = newChild.getFitness()
             self.individals.append(newChild)
 

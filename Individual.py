@@ -11,11 +11,11 @@ class Individual:
         # Note: theta in [0, pi] and phi in [0, 2pi]
     # Then, a point on the unit sphere can be described with two real numbers, thetaReal and phiReal
         # P(theta, phi) = P(thetaReal * pi, phiReal * 2pi) => P(thetaReal, phiReal) where thetaReal and phiReal in [0, 1]
-    def __init__(self, numPoints, SCBL):
+    # Let each real coordinate be represented by a 64-bit modifiable "chromosome" (BitArray)
+    def __init__(self, numPoints):
         self.chromosome = ''
         self.numPoints = numPoints
-        self.SCBL = SCBL # Single Coordinate Bit Length
-        self.SPBL = self.SCBL * 2 # Single Point Bit Length
+        self.SCBL = 64
 
         # Generate a random chromosome for this individual
         for i in range(self.numPoints):
@@ -47,7 +47,7 @@ class Individual:
         # Seperate each point within the chromosome bitstring
         points = []
         for i in range(self.numPoints):
-            points.append(self.chromosome[i*self.SPBL : (i+1)*self.SPBL])
+            points.append(self.chromosome[i*(self.SCBL * 2) : (i+1)*(self.SCBL * 2)])
         
         # Calculate the fitness score for each combination of points
         fitnessScore = 0
@@ -68,7 +68,7 @@ class Individual:
         self.chromosome = ''.join(chromList)
         if self.isBadChromosome():
             # Generate a new valid chromosome
-            self.chromosome = Individual(self.numPoints, self.SCBL).chromosome
+            self.chromosome = Individual(self.numPoints).chromosome
         self.fitnessScore = self.getFitness()
 
     def isBadChromosome(self):

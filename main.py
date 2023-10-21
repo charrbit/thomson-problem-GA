@@ -8,7 +8,6 @@ parser.add_argument('-np', '--nPoints', type=int, default=16, help='Number of po
 parser.add_argument('-ni', '--nIndividuals', type=int, default=50, help='Number of individuals in the population')
 parser.add_argument('-ng', '--nGenerations', type=int, default=100, help='Number of generations of evolution to simulate')
 parser.add_argument('-mp', '--mutationProb', type=float, default=0.1, help='Probability of an individual mutating')
-parser.add_argument('-scbl', '--singleCoordinateBitLength', type=int, default=32, help='Number of bits to represent a single float coordinate. (can be 32 or 64)')
 parser.add_argument('-t', '--tol', type=float, default=1e-12, help='Tolerence between successive generation average scores before accepting convergence')
 args=parser.parse_args()
 
@@ -17,7 +16,6 @@ numPoints = args.nPoints
 numIndividuals = args.nIndividuals
 numGenerations = args.nGenerations
 mutationProb = args.mutationProb
-SCBL = args.singleCoordinateBitLength # Single Coordinate Bit Length
 tol = args.tol
 
 # Display parsed arguments
@@ -26,11 +24,10 @@ print('Number of points to place on the sphere: ', numPoints)
 print('Number of individuals in the population: ', numIndividuals)
 print('Number of generations of evolution to simulate: ', numGenerations)
 print('Probability of an individual mutating: ', mutationProb)
-print('Representing each coordinate value with', SCBL, 'bits')
 
 # Start the algorithm
 print('\nStarting . . . \n')
-population = Population(numPoints, numIndividuals, mutationProb, SCBL)
+population = Population(numPoints, numIndividuals, mutationProb)
 print('Initial population generated!\n')
 population.printBestIndividual()
 print('\n')
