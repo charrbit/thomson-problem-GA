@@ -10,7 +10,7 @@ class Population:
         self.numIndividuals = numIndividuals
         self.currGeneration = 0
         self.mutationRate = mutationProb
-        self.SCBL = 64
+        self.chromLength = 64
 
         # Generate the population
         for i in range(numIndividuals):
@@ -66,8 +66,8 @@ class Population:
         print('The best individual has a fitness score of: ', bestIndividual.fitnessScore)
         # Seperate each point within the chromosome bitstring
         for i in range(self.numPoints):
-            point = bestIndividual.chromosome[i*(self.SCBL*2) : (i+1)*(self.SCBL*2)]
-            k = np.array([point[0 : self.SCBL], point[self.SCBL:]])
+            point = bestIndividual.chromosome[i*(self.chromLength*2) : (i+1)*(self.chromLength*2)]
+            k = np.array([point[0 : self.chromLength], point[self.chromLength:]])
             k[0] = BitArray(bin=k[0]).float
             k[1] = BitArray(bin=k[1]).float
             r = k.astype(float) * np.array([np.pi, 2*np.pi])
@@ -100,8 +100,8 @@ class Population:
         self.sortPopulation()
         bestIndividual = self.individals[0]
         for i in range(self.numPoints):
-            point = bestIndividual.chromosome[i*(self.SCBL*2) : (i+1)*(self.SCBL*2)]
-            k = np.array([point[0 : self.SCBL], point[self.SCBL:]])
+            point = bestIndividual.chromosome[i*(self.chromLength*2) : (i+1)*(self.chromLength*2)]
+            k = np.array([point[0 : self.chromLength], point[self.chromLength:]])
             k[0] = BitArray(bin=k[0]).float
             k[1] = BitArray(bin=k[1]).float
             pos = k.astype(float) * np.array([np.pi, 2*np.pi])
