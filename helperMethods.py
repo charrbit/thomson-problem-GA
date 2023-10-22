@@ -22,10 +22,17 @@ def pointToBitArray(pointToConvert):
     return point
 
 # Convert a single BitArray point into two float coordinates
-def bitArrayToPoint(bitArrayToConvert, coordBitLength):
+def bitArrayToPoint(bitArrayToConvert):
     # Split the BitArray point into its two component BitArrays
-    point = [bitArrayToConvert.bin[:coordBitLength], bitArrayToConvert.bin[coordBitLength:]]
-    point = [BitArray(bin=f'0b{x}') for x in point]
+    point = splitBitArray(bitArrayToConvert, 2)
     # Convert each component into a float
     point = [bitArrayToFloat(x) for x in point]
     return point
+
+# Split a BitArray into a list of numSegment BitArrays (Should have len(BitArray) % numSegments = 0)
+def splitBitArray(bitArrayToSplit, numSegments):
+    bitArray = bitArrayToSplit.bin
+    segmentLength = int(len(bitArray) / numSegments)
+    bitArrayList = [bitArray[segmentLength*i : segmentLength*(i+1)] for i in range(numSegments)]
+    bitArrayList = [BitArray(bin=f'0b{item}') for item in bitArrayList]
+    return bitArrayList
