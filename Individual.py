@@ -53,23 +53,21 @@ class Individual:
         return fitnessScore
 
     def mutate(self):
-        # Pick a random index in the chromosome BitArray to mutate
-        mutIndex = rng.integers(0, len(self.chromosome) - 1)
-        # Flip the bit
-        self.chromosome.invert(mutIndex)
-        # Check if this mutation lead to a coordinate value outside the acceptable range of [0, 1]
-        if self.isBadChromosome():
-            # Generate a new valid chromosome
-            self.chromosome = Individual(self.numPoints).chromosome
-        self.fitnessScore = self.fitness()
-
-    def isBadChromosome(self):
-        ''' When mutating or crossing chromosomes, it is possible to get a point value that is
-            not within the appropriate [0, 1] range for thetaReal or phiReal. If this happens, the 
-            chromosome is considered bad and should be replaced with a valid one '''
+        # Seperate the chromosome into a list of point BitArrays
         points = splitBitArray(self.chromosome, self.numPoints)
-        for point in points:
-            thetaReal, phiReal = bitArrayToPoint(point) 
-            if (0 > thetaReal > 1) or (0 > phiReal > 1):
-                return True
-        return False
+        # Pick a random point in the chromosome BitArray
+        pointIndex = rng.integers(0, self.numPoints - 1)
+        point = points[pointIndex]
+        # Pick a random index in the point BitArray to mutate
+        mutIndex = rng.integers(0, len(point.bin) - 1)
+        point.invert(mutIndex)
+        # Check if this mutation lead to a coordinate value outside the acceptable range of [0, 1]
+        if not isValidPoint(point):
+            # Generate a new valid point
+            point = pointToBitArray(generateRandomPoint(rng))
+        # Replace the old point in the list
+        points[pointIndex] = point
+        # Rebuild the chromosome
+        self.chromosome = joinBitArray(points)
+        # Update the fitness score for the new configuration
+        self.fitnessScore = self.fitness()
