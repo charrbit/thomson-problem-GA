@@ -1,5 +1,3 @@
-import numpy as np
-
 from helperMethods import *
 
 # Create random number generator

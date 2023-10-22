@@ -1,3 +1,4 @@
+import numpy as np
 from bitstring import BitArray
 
 # Generate two random numbers in [0, 1] that represent the coordinates of a point on the unit sphere
