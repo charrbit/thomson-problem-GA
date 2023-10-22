@@ -15,10 +15,10 @@ def bitArrayToFloat(bitArrayToConvert):
 
 # Convert a point containing two float coordinates into a single BitArray
 def pointToBitArray(pointToConvert):
-    # Create a new BitArray containing the thetaReal coordinate
-    point = floatToBitArray(pointToConvert[0])
-    # Add the phiReal coordinate to the point
-    point.append(floatToBitArray(pointToConvert[1]))
+    # Convert the thetaReal and phiReal coordinates into BitArrays
+    point = [floatToBitArray(x) for x in pointToConvert]
+    # Combine the coordinates into a single BitArray
+    point = joinBitArrays(point)
     return point
 
 # Convert a single BitArray point into two float coordinates
@@ -37,6 +37,13 @@ def splitBitArray(bitArrayToSplit, numSegments):
     bitArrayList = [BitArray(bin=f'0b{item}') for item in bitArrayList]
     return bitArrayList
 
+# Combine a list of BitArrays into a single BitArray
+def joinBitArrays(bitArrayList):
+    bitarray = BitArray(bin='0b')
+    for item in bitArrayList:
+        bitarray.append(item)
+    return bitarray
+
 def electroStaticPotential(point1, point2):
     ''' Calculates the electrostatic potential between two points where
         the points are given as BitArrays each containing a thetaReal and phiReal value '''
@@ -48,3 +55,9 @@ def electroStaticPotential(point1, point2):
     # Convert thetaReal and phiReal values to spherical coordinates theta and phi
     diff *= np.array([np.pi, 2*np.pi])
     return 1 / np.linalg.norm(diff)
+
+def isValidPoint(pointToCheck):
+    thetaReal, phiReal = bitArrayToPoint(point) 
+    if (0 > thetaReal > 1) or (0 > phiReal > 1):
+        return True
+    return False
