@@ -36,3 +36,15 @@ def splitBitArray(bitArrayToSplit, numSegments):
     bitArrayList = [bitArray[segmentLength*i : segmentLength*(i+1)] for i in range(numSegments)]
     bitArrayList = [BitArray(bin=f'0b{item}') for item in bitArrayList]
     return bitArrayList
+
+def electroStaticPotential(point1, point2):
+    ''' Calculates the electrostatic potential between two points where
+        the points are given as BitArrays each containing a thetaReal and phiReal value '''
+    # Extract thetaReal and phiReal values for both points
+    P1 = bitArrayToPoint(point1)
+    P2 = bitArrayToPoint(point2)
+    # Convert the points to numpy arrays to find the vector difference
+    diff = np.subtract(np.array(P1), np.array(P2))
+    # Convert thetaReal and phiReal values to spherical coordinates theta and phi
+    diff *= np.array([np.pi, 2*np.pi])
+    return 1 / np.linalg.norm(diff)

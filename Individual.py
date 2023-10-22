@@ -27,7 +27,7 @@ class Individual:
         # Generate a random chromosome for this individual
         self.generateNewChromosome()
         # Set the initial fitness value
-        self.fitnessScore = self.getFitness()
+        self.fitnessScore = self.fitness()
 
     def generateNewChromosome(self):
         # Clear the current chromosome (if it exists)
@@ -40,28 +40,16 @@ class Individual:
             # Add it to the chromosome
             self.chromosome.append(newPointBitArray)
 
-    def fitness(self, point1, point2):
-        ''' Calculates the electrostatic potential between two points where
-            the points are given as BitArrays each containing a thetaReal and phiReal value'''
-        # Extract thetaReal and phiReal values for both points
-        P1 = bitArrayToPoint(point1)
-        P2 = bitArrayToPoint(point2)
-        # Convert the points to numpy arrays to find the vector difference
-        diff = np.subtract(np.array(P1), np.array(P2))
-        # Convert thetaReal and phiReal values to spherical coordinates theta and phi
-        diff *= np.array([np.pi, 2*np.pi])
-        return 1 / np.linalg.norm(diff)
-
-    def getFitness(self):
+    def fitness(self):
         ''' Calculates the total electrostatic potential for the configuration '''
         # Seperate each point within the chromosome BitArray
         points = splitBitArray(self.chromosome, self.numPoints)
         
-        # Calculate the fitness score for each combination of points
+        # Calculate the fitness score for each pair of points
         fitnessScore = 0
         for i in range(self.numPoints - 1):
             for j in range(i+1, self.numPoints):
-                fitnessScore += self.fitness(points[i], points[j])
+                fitnessScore += electroStaticPotential(points[i], points[j])
         return fitnessScore
 
     def mutate(self):
@@ -73,7 +61,7 @@ class Individual:
         if self.isBadChromosome():
             # Generate a new valid chromosome
             self.chromosome = Individual(self.numPoints).chromosome
-        self.fitnessScore = self.getFitness()
+        self.fitnessScore = self.fitness()
 
     def isBadChromosome(self):
         ''' When mutating or crossing chromosomes, it is possible to get a point value that is
