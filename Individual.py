@@ -25,6 +25,13 @@ class Individual:
         self.numPoints = numPoints
 
         # Generate a random chromosome for this individual
+        self.generateNewChromosome()
+        # Set the initial fitness value
+        self.fitnessScore = self.getFitness()
+
+    def generateNewChromosome(self):
+        # Clear the current chromosome (if it exists)
+        self.chromosome.clear()
         for i in range(self.numPoints):
             # Generate a new random point on the unit sphere
             newPoint = generateRandomPoint(rng)
@@ -32,8 +39,6 @@ class Individual:
             newPointBitArray = pointToBitArray(newPoint)
             # Add it to the chromosome
             self.chromosome.append(newPointBitArray)
-        # Set the initial fitness value
-        self.fitnessScore = self.getFitness()
 
     def fitness(self, point1, point2):
         ''' Calculates the electrostatic potential between two points where
