@@ -23,7 +23,6 @@ class Individual:
     def __init__(self, numPoints):
         self.chromosome = BitArray(bin='0b') # Empty
         self.numPoints = numPoints
-        self.chromLength = 64
 
         # Generate a random chromosome for this individual
         for i in range(self.numPoints):
