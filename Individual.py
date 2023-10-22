@@ -8,15 +8,20 @@ rng = np.random.default_rng()
 class Individual:
     ''' An individual of the genetic algorithm consits of an approximate solution to the Thomson
         problem for a given number of electrons (i.e. a set of points on the sphere) '''
+
     # A point on a sphere, in a spherical coordinate system, can be described by three values
         # P = (R, theta, phi)
     # For the unit sphere, R = 1 => P = (1, theta, phi) => P(theta, phi)
         # Note: theta in [0, pi] and phi in [0, 2pi]
     # Then, a point on the unit sphere can be described with two real numbers, thetaReal and phiReal
         # P(theta, phi) = P(thetaReal * pi, phiReal * 2pi) => P(thetaReal, phiReal) where thetaReal and phiReal in [0, 1]
-    # Let each real coordinate be represented by a 64-bit modifiable "chromosome" (BitArray)
+
+    # Let each real coordinate be represented by a 64-bit BitArray
+    # Let each point be represented by a 128-bit BitArray
+    # Let the chromosome be the combination of all points in the configuration be represented by a (128*numPoints)-bit BitArray
+
     def __init__(self, numPoints):
-        self.chromosome = BitArray(bin='0b')
+        self.chromosome = BitArray(bin='0b') # Empty
         self.numPoints = numPoints
         self.chromLength = 64
 
@@ -67,9 +72,9 @@ class Individual:
         self.fitnessScore = self.getFitness()
 
     def isBadChromosome(self):
-        ''' When mutating or crossing chromosomes, it is possible to get a value that is
-            not within the appropriate [0,1] range for thetaReal or phiReal. If this happens, the 
-            chromosome is considered bad and is replaced with a random valid one '''
+        ''' When mutating or crossing chromosomes, it is possible to get a point value that is
+            not within the appropriate [0, 1] range for thetaReal or phiReal. If this happens, the 
+            chromosome is considered bad and should be replaced with a valid one '''
         points = splitBitArray(self.chromosome, self.numPoints)
         for point in points:
             thetaReal, phiReal = bitArrayToPoint(point) 
