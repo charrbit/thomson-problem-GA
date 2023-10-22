@@ -27,7 +27,7 @@ class Individual:
         # Generate a random chromosome for this individual
         self.generateNewChromosome()
         # Set the initial fitness value
-        self.fitnessScore = self.fitness()
+        self.updateFitness()
 
     def generateNewChromosome(self):
         # Clear the current chromosome (if it exists)
@@ -40,7 +40,7 @@ class Individual:
             # Add it to the chromosome
             self.chromosome.append(newPointBitArray)
 
-    def fitness(self):
+    def updateFitness(self):
         ''' Calculates the total electrostatic potential for the configuration '''
         # Seperate each point within the chromosome BitArray
         points = splitBitArray(self.chromosome, self.numPoints)
@@ -50,7 +50,7 @@ class Individual:
         for i in range(self.numPoints - 1):
             for j in range(i+1, self.numPoints):
                 fitnessScore += electroStaticPotential(points[i], points[j])
-        return fitnessScore
+        self.fitnessScore = fitnessScore
 
     def mutate(self):
         # Seperate the chromosome into a list of point BitArrays
@@ -70,4 +70,4 @@ class Individual:
         # Rebuild the chromosome
         self.chromosome = joinBitArray(points)
         # Update the fitness score for the new configuration
-        self.fitnessScore = self.fitness()
+        self.updateFitness()
