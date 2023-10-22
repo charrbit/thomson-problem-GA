@@ -66,6 +66,6 @@ class Individual:
         # Replace the old point in the list
         points[pointIndex] = point
         # Rebuild the chromosome
-        self.chromosome = joinBitArray(points)
+        self.chromosome = joinBitArrays(points)
         # Update the fitness score for the new configuration
         self.updateFitness()
