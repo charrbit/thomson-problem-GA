@@ -16,41 +16,37 @@ class Individual:
         # P(theta, phi) = P(thetaReal * pi, phiReal * 2pi) => P(thetaReal, phiReal) where thetaReal and phiReal in [0, 1]
     # Let each real coordinate be represented by a 64-bit modifiable "chromosome" (BitArray)
     def __init__(self, numPoints):
-        self.chromosome = ''
+        self.chromosome = BitArray(bin='0b')
         self.numPoints = numPoints
         self.chromLength = 64
 
         # Generate a random chromosome for this individual
         for i in range(self.numPoints):
-            thetaReal = rng.random()
-            phiReal = rng.random()
-            # Convert these values to a bitstring and append it to the chromosome
-            self.chromosome += BitArray(float=thetaReal, length=self.chromLength).bin + BitArray(float=phiReal, length=self.chromLength).bin
+            # Generate a new random point on the unit sphere
+            newPoint = generateRandomPoint(rng)
+            # Convert the point into its binary representation (BitArray)
+            newPointBitArray = pointToBitArray(newPoint)
+            # Add it to the chromosome
+            self.chromosome.append(newPointBitArray)
         # Set the initial fitness value
         self.fitnessScore = self.getFitness()
 
     def fitness(self, point1, point2):
         ''' Calculates the electrostatic potential between two points where
-            the points are given as bitstrings containing a thetaReal and phiReal value'''
-        # Extract thetaReal and phiReal for each point in bitstring form
-        P1 = np.array([point1[0 : self.chromLength], point1[self.chromLength:]])
-        P2 = np.array([point2[0 : self.chromLength], point2[self.chromLength:]])
-        # Convert the thetaReal and phiReal values from bitstring to a float represented as a string
-        for i in range(len(P1)):
-            P1[i] = BitArray(bin=P1[i]).float
-            P2[i] = BitArray(bin=P2[i]).float
-        # Convert the points to floats then find the difference between the thetaReal and phiReal values
-        diff = P1.astype(float) - P2.astype(float)
+            the points are given as BitArrays each containing a thetaReal and phiReal value'''
+        # Extract thetaReal and phiReal values for both points
+        P1 = bitArrayToPoint(point1)
+        P2 = bitArrayToPoint(point2)
+        # Convert the points to numpy arrays to find the vector difference
+        diff = np.subtract(np.array(P1), np.array(P2))
         # Convert thetaReal and phiReal values to spherical coordinates theta and phi
         diff *= np.array([np.pi, 2*np.pi])
         return 1 / np.linalg.norm(diff)
 
     def getFitness(self):
         ''' Calculates the total electrostatic potential for the configuration '''
-        # Seperate each point within the chromosome bitstring
-        points = []
-        for i in range(self.numPoints):
-            points.append(self.chromosome[i*(self.chromLength * 2) : (i+1)*(self.chromLength * 2)])
+        # Seperate each point within the chromosome BitArray
+        points = splitBitArray(self.chromosome, self.numPoints)
         
         # Calculate the fitness score for each combination of points
         fitnessScore = 0
@@ -60,15 +56,11 @@ class Individual:
         return fitnessScore
 
     def mutate(self):
+        # Pick a random index in the chromosome BitArray to mutate
         mutIndex = rng.integers(0, len(self.chromosome) - 1)
-        # Get chromosome as a list so it can be modified
-        # (Python strings are immutable)
-        chromList = list(self.chromosome)
-        if self.chromosome[mutIndex] == '1':
-            chromList[mutIndex] = '0'
-        else:
-            chromList[mutIndex] = '1'
-        self.chromosome = ''.join(chromList)
+        # Flip the bit
+        self.chromosome.invert(mutIndex)
+        # Check if this mutation lead to a coordinate value outside the acceptable range of [0, 1]
         if self.isBadChromosome():
             # Generate a new valid chromosome
             self.chromosome = Individual(self.numPoints).chromosome
@@ -78,12 +70,9 @@ class Individual:
         ''' When mutating or crossing chromosomes, it is possible to get a value that is
             not within the appropriate [0,1] range for thetaReal or phiReal. If this happens, the 
             chromosome is considered bad and is replaced with a random valid one '''
-        for i in range(self.numPoints):
-            point = self.chromosome[i*(self.chromLength*2) : (i+1)*(self.chromLength*2)]
-            P = np.array([point[0 : self.chromLength], point[self.chromLength:]])
-            P[0] = BitArray(bin=P[0]).float
-            P[1] = BitArray(bin=P[1]).float
-            P = P.astype(float)
-            if (P[0] < 0) or (P[0] > 1) or (P[1] < 0) or (P[1] > 1):
+        points = splitBitArray(self.chromosome, self.numPoints)
+        for point in points:
+            thetaReal, phiReal = bitArrayToPoint(point) 
+            if (0 > thetaReal > 1) or (0 > phiReal > 1):
                 return True
         return False
