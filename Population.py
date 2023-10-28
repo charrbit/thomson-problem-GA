@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import axes3d
 
 from Individual import *
 
@@ -79,34 +79,3 @@ class Population:
         for i in range(self.numIndividuals):
             total += self.individals[i].fitnessScore
         return total / self.numIndividuals
-
-    def plotBestIndividual(self):
-        # Generate the unit sphere
-        r = 1
-        phi, theta = np.mgrid[0.0:np.pi:200j, 0.0:2.0*np.pi:200j]
-        x = r*np.sin(phi)*np.cos(theta)
-        y = r*np.sin(phi)*np.sin(theta)
-        z = r*np.cos(phi)
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(x,y,z, color='white', alpha=0.6, linewidth=0)
-        ax.xaxis.set_ticklabels([])
-        ax.yaxis.set_ticklabels([])
-        ax.zaxis.set_ticklabels([])
-        ax.set_title('Number of Points = ' + str(self.numPoints))
-
-        # Plot the points associated with the best individual on the sphere
-        self.sortPopulation()
-        bestIndividual = self.individals[0]
-        for i in range(self.numPoints):
-            point = bestIndividual.chromosome[i*(self.chromLength*2) : (i+1)*(self.chromLength*2)]
-            k = np.array([point[0 : self.chromLength], point[self.chromLength:]])
-            k[0] = BitArray(bin=k[0]).float
-            k[1] = BitArray(bin=k[1]).float
-            pos = k.astype(float) * np.array([np.pi, 2*np.pi])
-            pointX = np.sin(pos[1])*np.cos(pos[0])
-            pointY = np.sin(pos[1])*np.sin(pos[0])
-            pointZ = np.cos(pos[1])
-            ax.scatter(pointX, pointY, pointZ, s=15, color="r")
-        plt.show()
