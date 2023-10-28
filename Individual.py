@@ -101,3 +101,14 @@ class Individual:
 
         # Show the figure
         plt.show()
+
+    def print(self):
+        print(f'Number of points: {self.numPoints}')
+        # Get each point as the spherical theta and phi values
+        points = splitBitArray(self.chromosome, self.numPoints)
+        points = [bitArrayToPoint(point) for point in points]
+        points = np.array(points) * np.array([np.pi, 2*np.pi])
+        for i, point in enumerate(points):
+            print(f'Point {i}:')
+            print(f'\tTheta:{point[0]} rad')
+            print(f'\tPhi:{point[1]} rad')

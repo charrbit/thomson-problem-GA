@@ -60,20 +60,6 @@ class Population:
                 self.individals[i].mutate()
         return count
 
-    def printBestIndividual(self):
-        self.sortPopulation()
-        bestIndividual = self.individals[0]
-        print('The best individual has a fitness score of: ', bestIndividual.fitnessScore)
-        # Seperate each point within the chromosome bitstring
-        for i in range(self.numPoints):
-            point = bestIndividual.chromosome[i*(self.chromLength*2) : (i+1)*(self.chromLength*2)]
-            k = np.array([point[0 : self.chromLength], point[self.chromLength:]])
-            k[0] = BitArray(bin=k[0]).float
-            k[1] = BitArray(bin=k[1]).float
-            r = k.astype(float) * np.array([np.pi, 2*np.pi])
-            print('Point', i, '| Theta: ', r[0], 'rad\n\t  Psi: ', r[1], 'rad\n')
-        print('-------------------------------------------------------')
-
     def getAverageScore(self):
         total = 0
         for i in range(self.numIndividuals):
