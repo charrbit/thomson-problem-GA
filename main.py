@@ -19,7 +19,7 @@ mutationProb = args.mutationProb
 tol = args.tol
 
 # Display parsed arguments
-print('Genetic Algorithm Approach to the Tompson Problem\n')
+print('Genetic Algorithm Approach to the Thomson Problem\n')
 print('Number of points to place on the sphere: ', numPoints)
 print('Number of individuals in the population: ', numIndividuals)
 print('Number of generations of evolution to simulate: ', numGenerations)
