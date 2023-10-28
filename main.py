@@ -30,9 +30,9 @@ print('\nStarting . . . \n')
 population = Population(numPoints, numIndividuals, mutationProb)
 print('Initial population generated!\n')
 while (population.currGeneration < numGenerations):
-    print('*** Starting Generation: ', population.currGeneration + 1, '***\n')    
+    print(f'*** Starting Generation: {population.currGeneration} ***\n')    
     population.makeSelection()
     population.crossParents()
     mutCount = population.applyMutations()
-    print('There were ', mutCount, 'mutations this generation!\n')
-    population.currGeneration += 1    
+    print(f'There were {mutCount} mutations this generation!\n')
+    population.currGeneration += 1
