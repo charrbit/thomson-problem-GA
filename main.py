@@ -29,15 +29,10 @@ print('Probability of an individual mutating: ', mutationProb)
 print('\nStarting . . . \n')
 population = Population(numPoints, numIndividuals, mutationProb)
 print('Initial population generated!\n')
-population.printBestIndividual()
-print('\n')
 while (population.currGeneration < numGenerations):
     print('*** Starting Generation: ', population.currGeneration + 1, '***\n')    
     population.makeSelection()
     population.crossParents()
     mutCount = population.applyMutations()
     print('There were ', mutCount, 'mutations this generation!\n')
-    population.printBestIndividual()
-    population.currGeneration += 1
-population.plotBestIndividual()
-    
+    population.currGeneration += 1    
