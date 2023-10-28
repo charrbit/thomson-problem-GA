@@ -10,7 +10,6 @@ class Population:
         self.numIndividuals = numIndividuals
         self.currGeneration = 0
         self.mutationRate = mutationProb
-        self.chromLength = 64
 
         # Generate the population
         for i in range(numIndividuals):
