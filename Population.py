@@ -8,7 +8,7 @@ class Population:
         self.individals = []
         self.numPoints = numPoints
         self.numIndividuals = numIndividuals
-        self.currGeneration = 0
+        self.currGeneration = 1
         self.mutationRate = mutationProb
 
         # Generate the population
