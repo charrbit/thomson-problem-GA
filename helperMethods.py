@@ -62,3 +62,9 @@ def isValidPoint(pointToCheck):
     if (0 > thetaReal > 1) or (0 > phiReal > 1):
         return False
     return True
+    
+def sphericalToCartesian(r, theta, phi):
+    x = r * np.sin(theta) * np.cos(phi)
+    y = r * np.sin(theta) * np.sin(phi)
+    z = r * np.cos(theta)
+    return [x, y, z]
