@@ -60,5 +60,5 @@ def electroStaticPotential(point1, point2):
 def isValidPoint(pointToCheck):
     thetaReal, phiReal = bitArrayToPoint(pointToCheck) 
     if (0 > thetaReal > 1) or (0 > phiReal > 1):
-        return True
-    return False
+        return False
+    return True
