@@ -28,6 +28,7 @@ class Individual:
         # Generate a random chromosome for this individual
         self.generateNewChromosome()
         # Set the initial fitness value
+        self.fitnessScore = 0
         self.updateFitness()
 
     def generateNewChromosome(self):
