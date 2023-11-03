@@ -58,9 +58,3 @@ class Population:
                 count += 1
                 self.individals[i].mutate()
         return count
-
-    def getAverageScore(self):
-        total = 0
-        for i in range(self.numIndividuals):
-            total += self.individals[i].fitnessScore
-        return total / self.numIndividuals
