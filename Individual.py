@@ -104,6 +104,7 @@ class Individual:
         plt.show()
 
     def print(self):
+        print(f'Fitness score: {self.fitnessScore}')
         print(f'Number of points: {self.numPoints}')
         # Get each point as the spherical theta and phi values
         points = splitBitArray(self.chromosome, self.numPoints)
