@@ -37,19 +37,33 @@ class Population:
             while parent1index == parent2index:
                 parent2index = rng.integers(0, numParents - 1)
 
-            parent1chromosome = self.individals[parent1index].chromosome
-            parent2chromosome = self.individals[parent2index].chromosome
+            # Split each parent chromosome into two halves for easier crossing
+            parent1chromosome = splitBitArray(self.individals[parent1index].chromosome, 2)
+            parent2chromosome = splitBitArray(self.individals[parent2index].chromosome, 2)
+
+            # Generate a new individual in the population
             newChild = Individual(self.numPoints)
             # Randomly choose which parent the child gets the first half of its chromosome from
+            # Assume it's parent1 at first
+            newChild.chromosome = joinBitArrays([parent1chromosome[0], parent2chromosome[1]])
             if rng.random() <= 0.5:
-                newChild.chromosome = parent1chromosome[:int(len(parent1chromosome)/2)] + parent2chromosome[int(len(parent2chromosome)/2):]
-            else:
-                newChild.chromosome = parent2chromosome[:int(len(parent2chromosome)/2)] + parent1chromosome[int(len(parent1chromosome)/2):]
+                newChild.chromosome = joinBitArrays([parent2chromosome[0], parent1chromosome[1]])
 
-            if newChild.isBadChromosome():
-                # Generate a new valid chromosome
-                newChild.chromosome = Individual(self.numPoints).chromosome
-            newChild.fitnessScore = newChild.getFitness()
+            # Ensure the chromosome cross didn't create any invalid points
+            points = splitBitArray(newChild.chromosome, self.numPoints)
+            indicesToReplace = []
+            for i, point in enumerate(points):
+                if not isValidPoint(point):
+                    indicesToReplace.append(i)
+            # If an invalid point is found
+            if len(indicesToReplace) > 0:
+                for index in indicesToReplace:
+                    # Replace it with a new random valid point
+                    points[index] = pointToBitArray(generateRandomPoint(rng))
+            # Recombine the chromosome and update the fitness
+            newChild.chromosome = joinBitArrays(points)
+            newChild.updateFitness()
+
             self.individals.append(newChild)
 
     def applyMutations(self):
