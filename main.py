@@ -35,6 +35,10 @@ while (population.currGeneration < numGenerations):
     population.crossParents()
     mutCount = population.applyMutations()
     print(f'There were {mutCount} mutations this generation!\n')
+    # Print the best individual
+    population.sortPopulation()
+    population.individals[0].print()
+    
     population.currGeneration += 1
 
 # Plot the best individual
