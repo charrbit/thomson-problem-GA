@@ -4,9 +4,9 @@ from Population import *
 
 # Parse arguments
 parser = ArgumentParser(description='Genetic Algorithm Approach to the Tompson Problem')
-parser.add_argument('-np', '--nPoints', type=int, default=16, help='Number of points to place on the sphere')
+parser.add_argument('-np', '--nPoints', type=int, default=2, help='Number of points to place on the sphere')
 parser.add_argument('-ni', '--nIndividuals', type=int, default=50, help='Number of individuals in the population')
-parser.add_argument('-ng', '--nGenerations', type=int, default=100, help='Number of generations of evolution to simulate')
+parser.add_argument('-ng', '--nGenerations', type=int, default=25, help='Number of generations of evolution to simulate')
 parser.add_argument('-mp', '--mutationProb', type=float, default=0.1, help='Probability of an individual mutating')
 # parser.add_argument('-t', '--tol', type=float, default=1e-12, help='Tolerence between successive generation average scores before accepting convergence')
 args=parser.parse_args()
