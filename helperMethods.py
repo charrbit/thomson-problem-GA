@@ -58,8 +58,10 @@ def electroStaticPotential(point1, point2):
     return 1 / np.linalg.norm(diff)
 
 def isValidPoint(pointToCheck):
-    thetaReal, phiReal = bitArrayToPoint(pointToCheck) 
-    if (0 > thetaReal > 1) or (0 > phiReal > 1):
+    thetaReal, phiReal = bitArrayToPoint(pointToCheck)
+    if thetaReal < 1e-16 or thetaReal > 1:
+        return False
+    elif phiReal < 1e-16 or phiReal > 1:
         return False
     return True
     
