@@ -27,14 +27,15 @@ class Population:
     def crossParents(self):
         ''' Randomly pairs up two individuals within the population to cross. Whether
             the child inherits the beginning or end of a particular parent is randomly chosen '''
+        numParents = len(self.individals)
         # While the population is not back to its original size
         while len(self.individals) < self.numIndividuals:
             # Randomly choose two parents to cross
-            parent1index = rng.integers(0, len(self.individals) - 1)
-            parent2index = rng.integers(0, len(self.individals) - 1)
+            parent1index = rng.integers(0, numParents - 1)
+            parent2index = rng.integers(0, numParents - 1)
             # Ensure the same parent is not chosen twice
-            while parent1index != parent2index:
-                parent2index = rng.integers(0, len(self.individals))
+            while parent1index == parent2index:
+                parent2index = rng.integers(0, numParents - 1)
 
             parent1chromosome = self.individals[parent1index].chromosome
             parent2chromosome = self.individals[parent2index].chromosome
