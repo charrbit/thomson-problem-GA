@@ -1,5 +1,7 @@
-import numpy as np
-from bitstring import BitArray
+from Point import *
+
+# Create random number generator
+rng = np.random.default_rng()
 
 def generateRandomPoint():
     ''' Generates a random point on the unit sphere '''

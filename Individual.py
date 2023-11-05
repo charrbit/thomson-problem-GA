@@ -1,11 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
-from Point import *
 from helperMethods import *
-
-# Create random number generator
-rng = np.random.default_rng()
 
 class Individual:
     ''' An individual of the genetic algorithm consits of an approximate solution to the Thomson
@@ -27,7 +23,7 @@ class Individual:
         self.chromosome.clear()
         for i in range(self.numPoints):
             # Generate a random point on the unit sphere and add it to the chromosome
-            chromosome.append(generateRandomPoint())
+            self.chromosome.append(generateRandomPoint())
 
     def updateFitness(self):
         ''' Calculates the total electrostatic potential for the configuration of points'''
