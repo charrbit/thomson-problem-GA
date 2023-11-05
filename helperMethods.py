@@ -1,12 +1,5 @@
-from Point import *
-
-# Create random number generator
-rng = np.random.default_rng()
-
-def generateRandomPoint():
-    ''' Generates a random point on the unit sphere '''
-    thetaReal, phiReal = rng.random(2)
-    return Point(thetaReal, phiReal)
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 
 # Convert a float into a BitArray (Should be 64-bit)
 def floatToBitArray(floatToConvert):
@@ -47,12 +40,6 @@ def joinBitArrays(bitArrayList):
         bitarray.append(item)
     return bitarray
 
-def electroStaticPotential(point1, point2):
-    ''' Calculates the electrostatic potential between two points  '''
-    # Convert the points to spherical coordinates then find the distance between them
-    dist = np.subtract(np.array(point1.getPointSpherical()), np.array(point2.getPointSpherical()))
-    return 1 / np.linalg.norm(dist)
-
 def isValidPoint(pointToCheck):
     thetaReal, phiReal = bitArrayToPoint(pointToCheck)
     if thetaReal < 1e-16 or thetaReal > 1:
@@ -66,3 +53,44 @@ def sphericalToCartesian(r, theta, phi):
     y = r * np.sin(theta) * np.sin(phi)
     z = r * np.cos(theta)
     return [x, y, z]
+
+def plot(self):
+    # Generate grid points around the unit sphere
+    theta = np.linspace(0, np.pi, 16)
+    phi = np.linspace(0, 2*np.pi, 32)
+    # Convert the spherical grid points to Cartesian
+    x = np.outer(np.sin(theta), np.cos(phi))
+    y = np.outer(np.sin(theta), np.sin(phi))
+    z = np.outer(np.cos(theta), np.ones_like(phi))
+
+    # Generate the 3D figure
+    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+    ax.set(xticklabels=[],
+            yticklabels=[],
+            zticklabels=[],
+            title=f'Number of Points: {self.numPoints}')
+    # Add the unit sphere grid to the figure
+    ax.plot_wireframe(x, y, z, color='k', alpha=0.3)
+
+    # Add the points of the individual onto the surface of the sphere
+    points = splitBitArray(self.chromosome, self.numPoints)
+    points = [bitArrayToPoint(point) for point in points]
+    points = np.array(points) * np.array([np.pi, 2*np.pi])
+    theta, phi = points[:, 0], points[:, 1]
+    x, y, z = sphericalToCartesian(1, theta, phi)
+    ax.scatter(x, y, z, s=20, color='b')
+
+    # Show the figure
+    plt.show()
+
+def print(self):
+    print(f'Fitness score: {self.fitnessScore}')
+    print(f'Number of points: {self.numPoints}')
+    # Get each point as the spherical theta and phi values
+    points = splitBitArray(self.chromosome, self.numPoints)
+    points = [bitArrayToPoint(point) for point in points]
+    points = np.array(points) * np.array([np.pi, 2*np.pi])
+    for i, point in enumerate(points):
+        print(f'Point {i}:')
+        print(f'\tTheta:{point[0]} rad')
+        print(f'\tPhi:{point[1]} rad')
