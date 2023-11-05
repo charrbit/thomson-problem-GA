@@ -4,8 +4,8 @@ from Point import *
 rng = np.random.default_rng()
 
 class Individual:
-    ''' An individual of the genetic algorithm consits of an approximate solution to the Thomson
-        problem for a given number of electrons (i.e. a list of points on the unit sphere) '''
+    ''' An individual of the genetic algorithm consists of a possible solution 
+        to the Thomson problem for a given number of points on the unit sphere '''
 
     def __init__(self, numPoints):
         self.chromosome = []
@@ -26,7 +26,7 @@ class Individual:
             self.chromosome.append(generateRandomPoint())
 
     def updateFitness(self):
-        ''' Calculates the total electrostatic potential for the configuration of points'''
+        ''' Calculates the total electrostatic potential for the configuration of points '''
         # Reset the current fitness score
         self.fitnessScore = 0
         # Calculate the fitness score for each pair of points
