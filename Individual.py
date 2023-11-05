@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
+from Point import *
 from helperMethods import *
 
 # Create random number generator
