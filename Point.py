@@ -19,6 +19,10 @@ class Point:
     def getPoint(self):
         return [self.thetaReal, self.phiReal]
 
+    # Set the point with real-valued thetaReal and phiReal coordinates
+    def setPoint(self, point):
+        self.thetaReal, self.phiReal = point
+
     # Get the point as the spherical theta and phi coordinates
     def getPointSpherical(self):
         return np.array(self.getPoint()) * np.array([np.pi, 2*np.pi])
@@ -40,4 +44,3 @@ class Point:
         elif self.phiReal < 0 or self.phiReal > 1:
             return False
         return True
-    
