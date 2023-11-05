@@ -1,6 +1,9 @@
 from Individual import *
 
 class Population:
+    ''' A population of the genetic algorithm consists of a set of possible solutions to the Thomson problem
+        where point coordinates are "genetically" crossed and mutated towards a fitness minimum '''
+    
     def __init__(self, numPoints, numIndividuals, mutationProb):
         self.individals = []
         self.numPoints = numPoints
@@ -8,17 +11,18 @@ class Population:
         self.currGeneration = 1
         self.mutationRate = mutationProb
 
-        # Generate the population
+        # Generate the population of individuals
         for i in range(numIndividuals):
-            self.individals.append(Individual(numPoints))
+            self.individals.append(Individual(self.numPoints))
 
     def sortPopulation(self):
-        # Sort individuals in ascending order of fitness score
+        ''' Sorts individuals in ascending order of fitness score (the
+            Thomson problem seeks the minimum electrostatic potential) '''
         self.individals.sort(key=lambda x: x.fitnessScore)
 
     def makeSelection(self):
+        ''' Splits individuals in half keeping only those with the lowest fitness scores '''
         self.sortPopulation()
-        # Keep only the top 50% to be the parents
         self.individals = self.individals[:int(self.numIndividuals/2)]
 
     def crossParents(self):
@@ -64,6 +68,8 @@ class Population:
             self.individals.append(newChild)
 
     def applyMutations(self):
+        ''' Applies mutations to individuals based on the mutationRate
+            and returns the number of mutations that occured '''
         count = 0
         for i in range(self.numIndividuals):
             if rng.random() <= self.mutationRate:
