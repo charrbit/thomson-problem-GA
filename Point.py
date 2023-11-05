@@ -30,12 +30,7 @@ class Point:
     # Get the point as a 128-bit BitArray (binary string)
     def getPointBitArray(self):
         # Convert the real valued-coordinates into 64-bit BitArrays
-        thetaReal, phiReal = [BitArray(float=coord, length=64) for coord in self.getPoint()]
-        # Join them together
-        point = BitArray(bin='0b') # Empty
-        point.append(thetaReal)
-        point.append(phiReal)
-        return point
+       return [BitArray(float=coord, length=64) for coord in self.getPoint()]
 
     # Check if the coordinates of the point are within the Unit Interval
     def isValid(self):
