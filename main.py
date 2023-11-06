@@ -26,10 +26,13 @@ print('Probability of an individual mutating: ', mutationProb)
 # Start the algorithm
 print('\nStarting . . . \n')
 population = Population(numPoints, numIndividuals, mutationProb)
-print('Initial population generated!')
-print(f'Initial best fitness: {population.getBest().fitnessScore}\n')
+print('Initial population generated!\n')
+print('[Initial best]')
+print('-----------------------------------')
+population.getBest().print()
+print('-----------------------------------\n')
 while (population.currGeneration < numGenerations):
-    print(f'*** Starting Generation: {population.currGeneration} ***')
+    print(f'** Starting Generation: {population.currGeneration} **')
     # Generate new children from the best individuals
     population.crossParents()
     # Mutate the population
@@ -37,5 +40,8 @@ while (population.currGeneration < numGenerations):
     # Print the best individual
     print(f'\tBest fitness: {population.getBest().fitnessScore}\n')
     population.currGeneration += 1
-print(f'Final best fitness: {population.getBest().fitnessScore}')
+print('[Final best]')
+print('-----------------------------------')
+population.getBest().print()
+print('-----------------------------------')
 population.getBest().plot()
