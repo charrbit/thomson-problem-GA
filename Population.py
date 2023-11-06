@@ -24,6 +24,16 @@ class Population:
         ''' Splits individuals in half keeping only those with the lowest fitness scores '''
         self.sortPopulation()
         self.individals = self.individals[:int(self.numIndividuals/2)]
+    
+    def applyMutations(self):
+    ''' Applies mutations to individuals based on the mutationRate
+        and returns the number of mutations that occured '''
+        count = 0
+        for i in range(self.numIndividuals):
+            if rng.random() <= self.mutationRate:
+                count += 1
+                self.individals[i].mutate()
+        return count
 
     def crossParents(self):
         ''' Randomly pairs up two individuals within the population to cross. Whether
@@ -66,13 +76,3 @@ class Population:
             newChild.updateFitness()
 
             self.individals.append(newChild)
-
-    def applyMutations(self):
-        ''' Applies mutations to individuals based on the mutationRate
-            and returns the number of mutations that occured '''
-        count = 0
-        for i in range(self.numIndividuals):
-            if rng.random() <= self.mutationRate:
-                count += 1
-                self.individals[i].mutate()
-        return count
