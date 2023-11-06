@@ -25,7 +25,7 @@ class Population:
         self.sortPopulation()
         self.individals = self.individals[:int(self.numIndividuals/2)]
     
-    def getBest():
+    def getBest(self):
         ''' Returns the individual with the lowest fitness score '''
         self.sortPopulation()
         return self.individals[0]
