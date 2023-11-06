@@ -8,7 +8,6 @@ parser.add_argument('-np', '--nPoints', type=int, default=2, help='Number of poi
 parser.add_argument('-ni', '--nIndividuals', type=int, default=50, help='Number of individuals in the population')
 parser.add_argument('-ng', '--nGenerations', type=int, default=25, help='Number of generations of evolution to simulate')
 parser.add_argument('-mp', '--mutationProb', type=float, default=0.1, help='Probability of an individual mutating')
-# parser.add_argument('-t', '--tol', type=float, default=1e-12, help='Tolerence between successive generation average scores before accepting convergence')
 args=parser.parse_args()
 
 # Set arguments
@@ -16,7 +15,6 @@ numPoints = args.nPoints
 numIndividuals = args.nIndividuals
 numGenerations = args.nGenerations
 mutationProb = args.mutationProb
-# tol = args.tol
 
 # Display parsed arguments
 print('Genetic Algorithm Approach to the Thomson Problem\n')
@@ -28,19 +26,15 @@ print('Probability of an individual mutating: ', mutationProb)
 # Start the algorithm
 print('\nStarting . . . \n')
 population = Population(numPoints, numIndividuals, mutationProb)
-print('Initial population generated!\n')
+print('Initial population generated!')
+print(f'Initial best fitness: {population.getBest().fitnessScore}\n')
 while (population.currGeneration < numGenerations):
-    print(f'*** Starting Generation: {population.currGeneration} ***\n')    
-    population.makeSelection()
+    print(f'*** Starting Generation: {population.currGeneration} ***')
+    # Generate new children from the best individuals
     population.crossParents()
-    mutCount = population.applyMutations()
-    print(f'There were {mutCount} mutations this generation!\n')
+    # Mutate the population
+    print(f'\tThere were {population.applyMutations()} mutations this generation!\n')
     # Print the best individual
-    population.sortPopulation()
-    population.individals[0].print()
-    
+    print(f'\tBest fitness: {population.getBest().fitnessScore}\n')
     population.currGeneration += 1
-
-# Plot the best individual
-population.sortPopulation()
-population.individals[0].plot()
+print(f'Final best fitness: {population.getBest().fitnessScore}')
