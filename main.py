@@ -33,8 +33,9 @@ while (population.currGeneration < numGenerations):
     # Generate new children from the best individuals
     population.crossParents()
     # Mutate the population
-    print(f'\tThere were {population.applyMutations()} mutations this generation!\n')
+    print(f'\tThere were {population.applyMutations()} mutations this generation!')
     # Print the best individual
     print(f'\tBest fitness: {population.getBest().fitnessScore}\n')
     population.currGeneration += 1
 print(f'Final best fitness: {population.getBest().fitnessScore}')
+population.getBest().plot()
