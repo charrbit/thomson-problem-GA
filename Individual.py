@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
-from helperFunctions import *
+from helpers import *
 
 class Individual:
     ''' An individual of the genetic algorithm consists of a possible solution 
