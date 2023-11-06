@@ -86,14 +86,14 @@ class Individual:
                 zticklabels=[],
                 title=f'Number of Points: {self.numPoints}\nFitness Score: {self.fitnessScore}')
         # Add the unit sphere grid to the figure
-        ax.plot_wireframe(x, y, z, color='k', alpha=0.3)
+        ax.plot_wireframe(x, y, z, color='lightgrey', alpha=0.3)
 
         # Add the points of the individual onto the surface of the sphere
         points = [point.getPointSpherical() for point in self.chromosome]
         theta = [point[0] for point in points]
         phi = [point[1] for point in points]
         x, y, z = sphericalToCartesian(1, theta, phi)
-        ax.scatter(x, y, z, s=26, color='b')
+        ax.scatter(x, y, z, s=100, color='r')
 
         # Show the figure
         plt.show()
