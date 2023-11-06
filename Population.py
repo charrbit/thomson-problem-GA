@@ -26,8 +26,8 @@ class Population:
         self.individals = self.individals[:int(self.numIndividuals/2)]
     
     def applyMutations(self):
-    ''' Applies mutations to individuals based on the mutationRate
-        and returns the number of mutations that occured '''
+        ''' Applies mutations to individuals based on the mutationRate
+            and returns the number of mutations that occured '''
         count = 0
         for i in range(self.numIndividuals):
             if rng.random() <= self.mutationRate:
@@ -36,43 +36,24 @@ class Population:
         return count
 
     def crossParents(self):
-        ''' Randomly pairs up two individuals within the population to cross. Whether
-            the child inherits the beginning or end of a particular parent is randomly chosen '''
+        ''' Randomly pairs up two parent individuals within the population to cross and produce a
+            child individual until the population size has returned to numIndividuals. A cross consists
+            of randomly choosing points from both parents until the child has reached numPoints '''
+        self.makeSelection()
         numParents = len(self.individals)
         # While the population is not back to its original size
         while len(self.individals) < self.numIndividuals:
             # Randomly choose two parents to cross
-            parent1index = rng.integers(0, numParents - 1)
-            parent2index = rng.integers(0, numParents - 1)
-            # Ensure the same parent is not chosen twice
-            while parent1index == parent2index:
-                parent2index = rng.integers(0, numParents - 1)
-
-            # Split each parent chromosome into two halves for easier crossing
-            parent1chromosome = splitBitArray(self.individals[parent1index].chromosome, 2)
-            parent2chromosome = splitBitArray(self.individals[parent2index].chromosome, 2)
-
-            # Generate a new individual in the population
+            parent1index, parent2index = rng.choice(numParents, size=2, replace=False)
+            parent1 = self.individals[parent1index]
+            parent2 = self.individals[parent2index]
             newChild = Individual(self.numPoints)
-            # Randomly choose which parent the child gets the first half of its chromosome from
-            # Assume it's parent1 at first
-            newChild.chromosome = joinBitArrays([parent1chromosome[0], parent2chromosome[1]])
-            if rng.random() <= 0.5:
-                newChild.chromosome = joinBitArrays([parent2chromosome[0], parent1chromosome[1]])
-
-            # Ensure the chromosome cross didn't create any invalid points
-            points = splitBitArray(newChild.chromosome, self.numPoints)
-            indicesToReplace = []
-            for i, point in enumerate(points):
-                if not isValidPoint(point):
-                    indicesToReplace.append(i)
-            # If an invalid point is found
-            if len(indicesToReplace) > 0:
-                for index in indicesToReplace:
-                    # Replace it with a new random valid point
-                    points[index] = pointToBitArray(generateRandomPoint(rng))
-            # Recombine the chromosome and update the fitness
-            newChild.chromosome = joinBitArrays(points)
+            # Get a list of all points contained in both parents
+            parentPoints = parent1.chromosome + parent2.chromosome
+            # Randomly select distinct points for the child to inherit
+            for i in range(self.numPoints):
+                pointIndex = rng.integers(len(parentPoints))
+                newChild.chromosome[i].setPoint(parentPoints.pop().getPoint())
+            # Add the child to the population
             newChild.updateFitness()
-
             self.individals.append(newChild)
