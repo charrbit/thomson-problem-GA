@@ -62,6 +62,16 @@ class Individual:
         self.chromosome[pointIndex] = point
         # Update the fitness score for the new configuration
         self.updateFitness()
+    
+    def print(self):
+        print(f'Number of points: {self.numPoints}')
+        print(f'Fitness score: {self.fitnessScore}')
+        # Get each point as the real-valued thetaReal and phiReal coordinates
+        points = [point.getPoint() for point in self.chromosome]
+        for i, point in enumerate(points):
+            print(f'Point {i}:')
+            print(f'\tTheta: {point[0]} rad')
+            print(f'\tPhi: {point[1]} rad')
 
     def plot(self):
         # Generate grid points around the unit sphere
