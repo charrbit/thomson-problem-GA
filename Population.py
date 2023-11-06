@@ -25,6 +25,11 @@ class Population:
         self.sortPopulation()
         self.individals = self.individals[:int(self.numIndividuals/2)]
     
+    def getBest():
+        ''' Returns the individual with the lowest fitness score '''
+        self.sortPopulation()
+        return self.individals[0]
+    
     def applyMutations(self):
         ''' Applies mutations to individuals based on the mutationRate
             and returns the number of mutations that occured '''
