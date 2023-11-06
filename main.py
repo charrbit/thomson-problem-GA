@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from Population import *
 
 # Parse arguments
-parser = ArgumentParser(description='Genetic Algorithm Approach to the Tompson Problem')
+parser = ArgumentParser(description='Genetic Algorithm Approach to the Thomson Problem')
 parser.add_argument('-np', '--nPoints', type=int, default=2, help='Number of points to place on the sphere')
 parser.add_argument('-ni', '--nIndividuals', type=int, default=50, help='Number of individuals in the population')
 parser.add_argument('-ng', '--nGenerations', type=int, default=25, help='Number of generations of evolution to simulate')
